@@ -15,10 +15,22 @@ class PadSection extends React.Component {
 	}
 
 	render() {
+		const {width, height} = this.props
+		const style = {
+			width: width,
+			height: height
+		}
+
+
+		const PAD_ROW_HEIGHT = height/drumConfig.length;
 		return (
-			<div>
-				{drumConfig.map(({type}) => (
-					<PadRow type={type}/>
+			<div style={style}>
+				{drumConfig.map(({type, color}, idx) => (
+					<PadRow key={idx} 
+						type={type} 
+						color={color} 
+						height={PAD_ROW_HEIGHT} 
+						width={width}/>
 					))}
 			</div>
 		)

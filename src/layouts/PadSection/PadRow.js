@@ -11,14 +11,24 @@ class PadRow extends React.Component {
 		width: PropTypes.number.isRequired,
 		height: PropTypes.number.isRequired,
 		// Drum Type
-		type: PropTypes.string.isRequired
+		type: PropTypes.string.isRequired,
+		color: PropTypes.string.isRequired
 	}
 
 	render() {
+		const {width, height} = this.props 
+		const BUTTON_HEIGHT = height * 0.8;
+		const BUTTON_WIDTH = width/16 * 0.9;
 		return (
 			<div>
 				{[...Array(TOTAL_STEPS).keys()].map((stepIdx) => (
-					<ConnectedStepPadButton type={this.props.type} step={stepIdx}/>		
+					<ConnectedStepPadButton key={stepIdx} 
+					type={this.props.type} 
+						step={stepIdx}
+						height={BUTTON_HEIGHT}
+						width={BUTTON_WIDTH}
+						color={this.props.color}
+						/>		
 					))}
 			</div>
 		)

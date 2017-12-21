@@ -9,7 +9,8 @@ class StepPadButton extends React.Component {
 			height, 
 			active,
 			on,
-			color} = this.props 
+			color,
+			onClick} = this.props 
 
 		const baseStyle = {
 			width 	: width,
@@ -31,7 +32,8 @@ class StepPadButton extends React.Component {
 			color: Color(color).darken(.2).string()
 		}
 
-		return <button style={on ? onStyle : active ? active : baseStyle}/>
+		return <button style={on ? onStyle : active ? active : baseStyle}
+					onClick={onClick}/>
 	}
 }
 

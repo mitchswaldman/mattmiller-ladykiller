@@ -7,7 +7,6 @@ import DrumLoader from './DrumLoader'
 import Sequencer from './Sequencer'
 import AppLayout from './layouts/AppLayout'
 import store from './store'
-import registerServiceWorker from './registerServiceWorker';
 import {audioCtx, clock} from './audioCtx'
 
 ReactDOM.render(
@@ -18,5 +17,5 @@ ReactDOM.render(
 			<AppLayout />
 		</div>
 	</Provider>,
-	document.getElementById('root'));
-registerServiceWorker();
+	document.getElementById('root')
+);

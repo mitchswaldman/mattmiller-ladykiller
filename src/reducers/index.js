@@ -20,7 +20,7 @@ export default (state, {type, payload}) => {
 			return state.seT('showControlPanel', !state.get(['showControlPanel']))
 		case STEP_CLICK: {
 			const {type: drumType, step} = payload;
-			let selector = ['stepState', stepKey(drumType, step)];
+			let selector = ['steps', stepKey(drumType, step)];
 			return state.setIn(selector, !state.getIn(selector));
 		}
 		case ON_TICK: {
@@ -33,7 +33,7 @@ export default (state, {type, payload}) => {
 		}
 		case ON_LOAD: {
 			const {type: drumType, mode, buffer} = payload;
-			let newState = state.setIn(['drumBufferState', drumType, mode], buffer);
+			let newState = state.setIn(['drumBufferState', drumType, mode], buffer.sampleRate);
 			const totalSamplesLoaded = newState.getIn(['totalSamplesLoaded']) + 1;
 			newState = newState.set('totalSamplesLoaded', totalSamplesLoaded);
 			// There's two samples per each 'drum'

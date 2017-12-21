@@ -11,7 +11,9 @@ export const ConnectedStepPadButton = (() => {
 	})
 
 	const mapDispatchToProps = (dispatch, {type, step}) => ({
-		onClick: (type, step) => dispatch(onStepClick(type, step))
+		onClick: () => {
+			dispatch(onStepClick(type, step))
+		}
 	})
 
 	return connect(mapStateToProps, mapDispatchToProps)(StepPadButton)

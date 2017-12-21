@@ -35,7 +35,7 @@ class AppLayout extends React.Component {
 		return (
 			<div styles={styles.pageWrapper}>
 				<div styles={styles.wrapper}>
-					<PadSection />
+					<PadSection width={APP_WIDTH} height={APP_HEIGHT}/>
 				</div>
 			</div>
 		)
