@@ -50,7 +50,7 @@ const drumLoadingState = (() => {
 			loadingState[type][mode] = false
 		})
 	})
-})
+})()
 
 export default Immutable({
 	steps: initialStepState,

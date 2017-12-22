@@ -3,6 +3,8 @@ import Radium from 'radium'
 import PropTypes from 'prop-types'
 import Color from 'color'
 
+const BORDER_RADIUS = '4px'
+
 class StepPadButton extends React.Component {
 	render() {
 		const {width, 
@@ -12,27 +14,29 @@ class StepPadButton extends React.Component {
 			color,
 			onClick} = this.props 
 
+
 		const baseStyle = {
-			width 	: width,
-			height 	: height,
-			borderRadius: '4px',
-			color: Color(color).darken(.4).string(),
+			margin: 'auto',
+			flex: 1,
+			height: '100%',
+			padding: '10px',
+			borderRadius: BORDER_RADIUS,
+			backgroundColor: Color(color).hsl().opaquer(.3).string(),
 			':hover': {
-				border	: `2px solid ${Color(color).darken(0.2).string()}`
+				border	: `2px solid ${Color(color).hsl().darken(0.2).string()}`
 			}
 		}
-
 		const onStyle = {
 			...baseStyle,
-			color: color
+			backgroundColor: '#000'
 		}
 
 		const activeStyle = {
 			...baseStyle,
-			color: Color(color).darken(.2).string()
+			backgroundColor: '#888'
 		}
-
-		return <button style={on ? onStyle : active ? active : baseStyle}
+		const usedStyle = on ? onStyle : (active ? activeStyle : baseStyle)
+		return <button style={usedStyle}
 					onClick={onClick}/>
 	}
 }

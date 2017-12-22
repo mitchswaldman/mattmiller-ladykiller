@@ -1,36 +1,44 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {onTick} from './actionCreators'
-import {stepKey} from './helpers'
+import {stepKey, bufferKey} from './helpers'
 import WAAClock from 'waaclock'
+import drumBuffer from './drumBuffer'
+import drumConfig from './drumConfig'
+
+const previousTriggers = (() => {
+	const triggers = {}
+	drumConfig.forEach(({type}) => {
+		triggers[type] = null
+	})
+	return triggers
+})()
 
 const playDrumSound = (buffer, deadline, audioCtx) => {
 	const source = audioCtx.createBufferSource()
+	previousTriggers
 	source.buffer = buffer 
 	source.connect(audioCtx.destination)
 	source.start(deadline)
+	return source
 }
 
 const stepTrigger = (storeState, deadline, audioCtx, clock) => {
 	const {mode, drumBufferState, drumConfig, steps, currentStep} = storeState
-
+	//console.log(`Current step: ${currentStep}`)
 	drumConfig.forEach(({type}) => {
 		const stepId = stepKey(type, currentStep)
 
+		
 		if (steps[stepId]) {
-			playDrumSound(drumBufferState[type][mode], deadline, audioCtx)
+			if (previousTriggers[type] !== null) {
+				previousTriggers[type].stop()
+			}
+			const buffKey = bufferKey(type, mode)
+			previousTriggers[type] = playDrumSound(drumBuffer[buffKey], deadline, audioCtx)
 		}
 	})
 
-}
-
-let audioCtx, clock;
-try {
-	const AudioContext = window.AudioContext || window.webkitAudioContext
-	audioCtx = new AudioContext()
-	clock = new WAAClock(audioCtx)
-} catch (e) {
-	alert("You're browser doesn't support WebAudio. You dummy.")
 }
 
 class Sequencer extends React.Component {
@@ -45,8 +53,10 @@ class Sequencer extends React.Component {
 	}
 
 	handleTick({deadline}) {
-		stepTrigger(this.props.storeState, deadline, this.props.audioCtx, this.props.clock)
 		this.props.handleTick()
+		this.props.clock.setTimeout(() => {
+			stepTrigger(this.props.storeState, deadline, this.props.audioCtx, this.props.clock)
+		}, deadline - this.props.audioCtx.currentTime)
 	}
 
 	componentWillReceiveProps({storeState: nextStoreState}) {
@@ -61,7 +71,6 @@ class Sequencer extends React.Component {
 			const tickEvent = this.props.clock.callbackAtTime(this.handleTick, this.props.audioCtx.currentTime + 0.1)
 				.repeat(stepDuration)
 				.tolerance({late: 0.01})
-
 			return this.setState({tickEvent, currentTempo: tempo, currentStepDivision: stepDivision})
 		}
 

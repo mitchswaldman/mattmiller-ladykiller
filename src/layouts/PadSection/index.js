@@ -17,8 +17,11 @@ class PadSection extends React.Component {
 	render() {
 		const {width, height} = this.props
 		const style = {
-			width: width,
-			height: height
+			width: '100%',
+			height: '100%',
+			display: 'flex',
+			flexDirection: 'column',
+			flex: 3
 		}
 
 

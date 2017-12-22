@@ -1,16 +1,21 @@
 import {
-	TOTAL_STEPS
+	TOTAL_STEPS,
+	MATT_MODE,
+	TIANA_MODE
 } from '../constants'
 import {
+	PLAY_CLICK,
 	STEP_CLICK,
+	MODE_CLICK,
 	ON_TICK,
 	ON_LOAD,
 	DRUM_PANEL_CLICK,
 	CONTROL_PANEL_CLICK
 } from '../actionTypes'
 import drumConfig from '../drumConfig'
-import {stepKey} from '../helpers'
+import {stepKey, bufferKey} from '../helpers'
 import initialState from '../initialState'
+import drumBuffer from '../drumBuffer'
 
 export default (state, {type, payload}) => {
 	switch (type) {
@@ -24,16 +29,24 @@ export default (state, {type, payload}) => {
 			return state.setIn(selector, !state.getIn(selector));
 		}
 		case ON_TICK: {
-			let nextStep = state.getIn(['currentStep']) + 1;
-			// reset nextStep to 0 once it hits that last sequencer step
-			if( nextStep === TOTAL_STEPS) {
-				nextStep = 0;
+			return state.set('currentStep', (state.getIn(['currentStep']) + 1) % TOTAL_STEPS);
+		}
+		case MODE_CLICK: {
+			const mode = state.getIn(['mode'])
+			if (mode === MATT_MODE) {
+				return state.set('mode', TIANA_MODE)
+			} else {
+				return state.set('mode', MATT_MODE)
 			}
-			return state.set('currentStep', nextStep);
+		}
+		case PLAY_CLICK: {
+			return state.set('playing', !state.getIn(['playing']))
 		}
 		case ON_LOAD: {
 			const {type: drumType, mode, buffer} = payload;
-			let newState = state.setIn(['drumBufferState', drumType, mode], buffer.sampleRate);
+			const buffKey = bufferKey(drumType, mode)
+			let newState = state.setIn(['drumBufferState', drumType, mode], buffKey);
+			drumBuffer[buffKey] = buffer
 			const totalSamplesLoaded = newState.getIn(['totalSamplesLoaded']) + 1;
 			newState = newState.set('totalSamplesLoaded', totalSamplesLoaded);
 			// There's two samples per each 'drum'

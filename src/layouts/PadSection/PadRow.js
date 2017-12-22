@@ -19,14 +19,16 @@ class PadRow extends React.Component {
 		const {width, height} = this.props 
 		const BUTTON_HEIGHT = height * 0.8;
 		const BUTTON_WIDTH = width/16 * 0.9;
+		const style = {
+			width: '100%', height: '100%',
+			display: 'flex',
+		}
 		return (
-			<div>
+			<div style={style}>
 				{[...Array(TOTAL_STEPS).keys()].map((stepIdx) => (
 					<ConnectedStepPadButton key={stepIdx} 
 					type={this.props.type} 
 						step={stepIdx}
-						height={BUTTON_HEIGHT}
-						width={BUTTON_WIDTH}
 						color={this.props.color}
 						/>		
 					))}
