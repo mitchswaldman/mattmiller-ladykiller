@@ -1,5 +1,6 @@
 import Immutable from 'seamless-immutable'
 import drumConfig from './drumConfig'
+import drumControls from './drumControls'
 import {stepKey} from './helpers'
 import {
 	MATT_MODE,
@@ -22,11 +23,10 @@ const initialStepState = (() => {
 const initialDrumState = (() => {
 	const drumState = {}
 	drumConfig.forEach(({type}) => {
-		drumState[type] = {
-			level: 75,
-			length: 1.0,
-			pitch: 1.0
-		}
+		drumState[type] = {}
+		Object.keys(drumControls).forEach(control => {
+			drumState[type][control] = drumControls[control]
+		})
 	})
 	return drumState
 })()
@@ -54,7 +54,7 @@ const drumLoadingState = (() => {
 
 export default Immutable({
 	steps: initialStepState,
-	drumState: initialDrumState,
+	drumControlState: initialDrumState,
 	drumBufferState: drumBufferState,
 	drumLoadingState: drumLoadingState,
 	drumConfig: drumConfig,

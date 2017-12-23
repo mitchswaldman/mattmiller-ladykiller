@@ -11,7 +11,7 @@ import {audioCtx, clock} from './audioCtx'
 
 ReactDOM.render(
 	<Provider store={store}>
-		<div style={{width: '100%', height: '100%'}}>
+		<div style={{width: '100%', height: '100vh'}}>
 			<DrumLoader audioCtx={audioCtx}/>
 			<Sequencer audioCtx={audioCtx} clock={clock}/> 
 			<AppLayout />

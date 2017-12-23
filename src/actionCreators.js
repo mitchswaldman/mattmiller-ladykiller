@@ -1,4 +1,7 @@
 import {
+	DRUM_CONTROL_CHANGE,
+	CONTROL_PANEL_CLICK,
+	TEMPO_CHANGE,
 	PLAY_CLICK,
 	STEP_CLICK,
 	ON_TICK,
@@ -33,4 +36,24 @@ export const onModeClick = () => ({
 
 export const onPlayClick = () => ({
 	type: PLAY_CLICK
+})
+
+export const onTempoChange = (tempo) => ({
+	type: TEMPO_CHANGE,
+	payload: {
+		tempo
+	}
+})
+
+export const onControlPanelClick = () => ({
+	type: CONTROL_PANEL_CLICK
+})
+
+export const onDrumControlChange = (type, control, value) => ({
+	type: DRUM_CONTROL_CHANGE,
+	payload: {
+		type, 
+		control, 
+		value
+	}
 })

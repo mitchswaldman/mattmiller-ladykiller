@@ -4,6 +4,8 @@ import {
 	TIANA_MODE
 } from '../constants'
 import {
+	DRUM_CONTROL_CHANGE,
+	TEMPO_CHANGE,
 	PLAY_CLICK,
 	STEP_CLICK,
 	MODE_CLICK,
@@ -22,11 +24,15 @@ export default (state, {type, payload}) => {
 		case DRUM_PANEL_CLICK:
 			return state.set('showDrumPanel', !state.getIn(['showDrumPanel']))
 		case CONTROL_PANEL_CLICK:
-			return state.seT('showControlPanel', !state.get(['showControlPanel']))
+			return state.set('showControlPanel', !state.getIn(['showControlPanel']))
 		case STEP_CLICK: {
 			const {type: drumType, step} = payload;
 			let selector = ['steps', stepKey(drumType, step)];
 			return state.setIn(selector, !state.getIn(selector));
+		}
+		case DRUM_CONTROL_CHANGE: {
+			const { type: drumType, control, value} = payload 
+			return state.setIn(['drumControlState', drumType, control, 'value'], value)
 		}
 		case ON_TICK: {
 			return state.set('currentStep', (state.getIn(['currentStep']) + 1) % TOTAL_STEPS);
@@ -40,7 +46,18 @@ export default (state, {type, payload}) => {
 			}
 		}
 		case PLAY_CLICK: {
+			const playing = state.getIn(['playing'])
+			if (!playing) {
+				return state.merge({
+					playing: !playing	,
+					currentStep: -1
+				})
+			}
 			return state.set('playing', !state.getIn(['playing']))
+		}
+		case TEMPO_CHANGE: {
+			const {tempo} = payload
+			return state.set('tempo', tempo)
 		}
 		case ON_LOAD: {
 			const {type: drumType, mode, buffer} = payload;

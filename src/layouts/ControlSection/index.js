@@ -1,56 +1,49 @@
 import React from 'react'
 import Radium from 'radium'
-import {onModeClick, onPlayClick} from '../../actionCreators'
-import {connect} from 'react-redux'
-
-const SwitchModeButton = ({mode, handleClick, children}) => {
-	return (
-	<button onClick={handleClick}>
-		Switch Mode
-	</button>
-)}
-
-const PlayPauseButton = ({playing, handleClick}) => {
-	return (
-		<button onClick={handleClick}>
-			{playing ? 'Pause' : 'Play' }
-		</button>
-	)
-}
-
-const ConnectedSwitchModeButton = (() => {
-	const mapStateToProps = (state) => ({
-		mode: state.mode
-	})
-
-	const mapDispatchToProps = (dispatch) => ({
-		handleClick: () => dispatch(onModeClick())
-	})
-	return connect(mapStateToProps, mapDispatchToProps)(SwitchModeButton)
-})()
-
-const ConnectedPlayButton = (() => {
-	const mapStateToProps = (state) => ({
-		playing: state.playing
-	})
-
-	const mapDispatchToProps = (dispatch) => ({
-		handleClick: () => dispatch(onPlayClick())
-	})
-	return connect(mapStateToProps, mapDispatchToProps)(PlayPauseButton)
-})()
+import PropTypes from 'prop-types'
+import {
+	onModeClick, 
+	onPlayClick,
+	onTempoChange
+} from '../../actionCreators'
+import {
+	ConnectedSwitchModeButton,
+	ConnectedPlayButton,
+	ConnectedTempoControl,
+	ConnectedShowHideControlPanel
+} from './connectedComponents'
 
 class ControlSection extends React.Component {
 	render() {
+		const {showControlPanel} = this.props 
 		const style = {
-			flex: 1
+			display: 'flex'
 		}
 		return (
 			<div style={style}>
-				<ConnectedSwitchModeButton/>
-				<ConnectedPlayButton />
+				{showControlPanel && 
+					<div>
+						<ConnectedSwitchModeButton/>
+						<ConnectedPlayButton />
+						<ConnectedTempoControl/>
+						<ConnectedShowHideControlPanel>
+							Hide Control Panel
+						</ConnectedShowHideControlPanel>
+					</div>
+				}
+				{!showControlPanel && 
+					<div>
+						<ConnectedShowHideControlPanel>
+							Show Control Panel
+						</ConnectedShowHideControlPanel>
+					</div>
+				}
 			</div>)
 	}
+}
+
+ControlSection.PropTypes = {
+	showControlPanel: PropTypes.bool.isRequired
 }
 
 export default Radium(ControlSection)

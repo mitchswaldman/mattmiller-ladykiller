@@ -6,6 +6,20 @@ import WAAClock from 'waaclock'
 import drumBuffer from './drumBuffer'
 import drumConfig from './drumConfig'
 
+function makeDistortionCurve(amount) {
+  var k = typeof amount === 'number' ? amount : 50,
+    n_samples = 44100,
+    curve = new Float32Array(n_samples),
+    deg = Math.PI / 180,
+    i = 0,
+    x;
+  for ( ; i < n_samples; ++i ) {
+    x = i * 2 / n_samples - 1;
+    curve[i] = ( 3 + k ) * x * 20 * deg / ( Math.PI + k * Math.abs(x) );
+  }
+  return curve;
+};
+
 const previousTriggers = (() => {
 	const triggers = {}
 	drumConfig.forEach(({type}) => {
@@ -14,17 +28,37 @@ const previousTriggers = (() => {
 	return triggers
 })()
 
-const playDrumSound = (buffer, deadline, audioCtx) => {
+const playDrumSound = (buffer, controls, deadline, audioCtx) => {
 	const source = audioCtx.createBufferSource()
 	previousTriggers
-	source.buffer = buffer 
-	source.connect(audioCtx.destination)
+	source.buffer = buffer
+	source.playbackRate.value = controls.speed.value
+
+	// Set gain
+	const gainNode = audioCtx.createGain()
+	gainNode.gain.value = controls.level.value
+	gainNode.maxValue = controls.level.max
+	gainNode.minValue = controls.level.min
+	source.connect(gainNode)
+
+	// Set pan
+	const panNode = audioCtx.createStereoPanner()
+	panNode.pan.value = controls.pan.value
+	gainNode.connect(panNode)
+
+	// Set distortion
+	// const distortion = audioCtx.createWaveShaper()
+	// distortion.curve = makeDistortionCurve(controls.distortion.value)
+	// distortion.oversample = '4x'
+	// panNode.connect(distortion)
+
+	panNode.connect(audioCtx.destination)
 	source.start(deadline)
 	return source
 }
 
 const stepTrigger = (storeState, deadline, audioCtx, clock) => {
-	const {mode, drumBufferState, drumConfig, steps, currentStep} = storeState
+	const {mode, drumBufferState, drumConfig, drumControlState, steps, currentStep} = storeState
 	//console.log(`Current step: ${currentStep}`)
 	drumConfig.forEach(({type}) => {
 		const stepId = stepKey(type, currentStep)
@@ -35,7 +69,8 @@ const stepTrigger = (storeState, deadline, audioCtx, clock) => {
 				previousTriggers[type].stop()
 			}
 			const buffKey = bufferKey(type, mode)
-			previousTriggers[type] = playDrumSound(drumBuffer[buffKey], deadline, audioCtx)
+			const controls = drumControlState[type]
+			previousTriggers[type] = playDrumSound(drumBuffer[buffKey], controls, deadline, audioCtx)
 		}
 	})
 
