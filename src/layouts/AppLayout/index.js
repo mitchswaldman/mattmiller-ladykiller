@@ -57,7 +57,7 @@ class AppLayout extends React.Component {
 				display: 'flex'
 			},
 			drumSection: {
-				flex: '0 1'
+				flex: '0 1 20%'
 			},
 			padSection: {
 				flex: 1

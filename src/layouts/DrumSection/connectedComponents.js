@@ -4,36 +4,44 @@ import {connect} from 'react-redux'
 import {
 	onDrumControlChange
 } from '../../actionCreators'
+import Knob from '../../components/Knob'
 
 const DrumControl = ({control, params, handleChange}) => {
+	const onChange = (value) => {
+		handleChange(control, value)
+	}
+	const style = {
+		flex: 1
+	}
 	return (
-		<div>
+		<div style={style}>
 			<label>{control}</label>
 			<div>
-				<input type='range'
+				<Knob type='range'
 					name={control}
-					onChange={handleChange}
+					onChange={onChange}
 					max={params.max}
 					min={params.min}
 					step={params.step}
-					value={params.value}/>
+					value={params.value}
+					width='50%'/>
 			</div>
 		</div>
 	)
 }
 const DrumControlPanel = ({label, drumControls, handleChange}) => {
-	const onChange = (event) => {
-		const {target} = event
-		const {name, value} = target
-		handleChange(name, value)
+	const onChange = (control, value) => {
+		handleChange(control, value)
 	}
-
+	const style = {
+		display: 'flex'
+	}
 	return (
-		<div>
+		<div >
 			<div>
 				{label}
 			</div>
-			<div>
+			<div style={style}>
 				{Object.keys(drumControls).map((control, idx) => {
 					return (
 						<DrumControl key={idx}
