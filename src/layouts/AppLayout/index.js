@@ -2,7 +2,7 @@ import React from 'react'
 import Radium from 'radium'
 import drumConfig from '../../drumConfig'
 import {connect} from 'react-redux'
-import {getDrumPanel, getControlPanel} from '../../selectors'
+import {getDrumPanel, getControlPanel, getLoading} from '../../selectors'
 import {
 	TOTAL_STEPS
 } from '../../constants'
@@ -18,11 +18,12 @@ const APP_PADDING = 40;
 class AppLayout extends React.Component {
 	shouldComponentUpdate(nextProps) {
 		return (this.props.showDrumPanel !== nextProps.showDrumPanel) ||
-				(this.props.showControlPanel !== nextProps.showControlPanel);
+				(this.props.showControlPanel !== nextProps.showControlPanel) ||
+				(this.props.samplesLoaded !== nextProps.samplesLoaded);
 	}
 	
 	render() {
-		const {showDrumPanel, showControlPanel} = this.props 
+		const {showDrumPanel, showControlPanel, samplesLoaded} = this.props 
 		const styles = {
 			pageWrapper : {
 				position: 'relative',
@@ -67,21 +68,32 @@ class AppLayout extends React.Component {
 		return (
 			<div id='page-wrapper' style={styles.pageWrapper}>
 				<div id='wrapper' style={styles.wrapper}>
-					<div id='top-section-wrapper' style={styles.topSectionWrapper}>
-						<div id='top-section' style={styles.topSection}>
-							<div style={styles.drumSection}>
-								<DrumSection />
+					{!samplesLoaded && 
+						<div>
+							<div className='loader'>
 							</div>
-							<div style={styles.padSection}>
-								<PadSection />
+							<div>
 							</div>
 						</div>
-					</div>
-					<div id='bottom-section-wrapper' style={styles.bottomSectionWrapper}>
-						<div id='bottom-section' style={styles.bottomSection}>
-							<ControlSection showControlPanel={showControlPanel}/>
+					}
+					{samplesLoaded && 
+					<div>
+						<div id='top-section-wrapper' style={styles.topSectionWrapper}>
+							<div id='top-section' style={styles.topSection}>
+								<div style={styles.drumSection}>
+									<DrumSection />
+								</div>
+								<div style={styles.padSection}>
+									<PadSection />
+								</div>
+							</div>
 						</div>
-					</div>
+						<div id='bottom-section-wrapper' style={styles.bottomSectionWrapper}>
+							<div id='bottom-section' style={styles.bottomSection}>
+								<ControlSection showControlPanel={showControlPanel}/>
+							</div>
+						</div>
+					</div>}
 				</div>
 			</div>
 		)
@@ -89,7 +101,8 @@ class AppLayout extends React.Component {
 }
 const mapStateToProps = (state) => ({
 	showDrumPanel: getDrumPanel(state),
-	showControlPanel: getControlPanel(state)
+	showControlPanel: getControlPanel(state),
+	samplesLoaded: getLoading(state)
 })
 
 export default Radium(connect(mapStateToProps)(AppLayout))

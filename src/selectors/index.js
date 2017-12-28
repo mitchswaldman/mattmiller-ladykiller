@@ -21,3 +21,5 @@ export const getStepButton = createCachedSelector(
 export const getDrumControls = (state, type) => state.drumControlState[type]
 export const getDrumPanel = state => state.showDrumPanel
 export const getControlPanel = state => state.showControlPanel
+
+export const getLoading = state => state.samplesLoaded
