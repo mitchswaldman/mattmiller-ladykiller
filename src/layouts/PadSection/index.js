@@ -9,11 +9,11 @@ import PadRow from './PadRow'
 
 
 class PadSection extends React.Component {
-	static propTypes = {
-		width: PropTypes.number.isRequired,
-		height: PropTypes.number.isRequired
+	
+	shouldComponentUpdate() {
+		return false
 	}
-
+	
 	render() {
 		const {width, height} = this.props
 		const style = {

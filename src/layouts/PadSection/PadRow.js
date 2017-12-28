@@ -8,13 +8,15 @@ import {ConnectedStepPadButton} from './connectedComponents'
 
 class PadRow extends React.Component {
 	static propTypes = {
-		width: PropTypes.number.isRequired,
-		height: PropTypes.number.isRequired,
 		// Drum Type
 		type: PropTypes.string.isRequired,
 		color: PropTypes.string.isRequired
 	}
 
+	shouldComponentUpDate() {
+		return false
+	}
+	
 	render() {
 		const {width, height} = this.props 
 		const BUTTON_HEIGHT = height * 0.8;

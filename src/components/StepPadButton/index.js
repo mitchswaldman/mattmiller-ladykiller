@@ -6,9 +6,16 @@ import Color from 'color'
 const BORDER_RADIUS = '4px'
 
 class StepPadButton extends React.Component {
+	shouldComponentUpdate({on: nextOn, active: nextActive}) {
+		const {on, active} = this.props 
+		if((nextOn !== on) || (nextActive !== active)) {
+			return true
+		}
+		return false
+	}
+
 	render() {
-		const {width, 
-			height, 
+		const {
 			active,
 			on,
 			color,
@@ -42,8 +49,6 @@ class StepPadButton extends React.Component {
 }
 
 StepPadButton.propTypes = {
-	width: PropTypes.number.isRequired,
-	height: PropTypes.number.isRequired,
 	// on means the user manually turned on this step pad
 	on: PropTypes.bool.isRequired,
 	// active means state.currentStep lines up with this stepPad.

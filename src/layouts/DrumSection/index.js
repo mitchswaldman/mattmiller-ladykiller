@@ -20,7 +20,7 @@ class DrumSection extends React.Component {
 			<div style={styles.drumSectionWrapper}>
 				{drumConfig.map(({type, label}) => {
 					return (
-						<div style={styles.drumControlWrapper}>
+						<div style={styles.drumControlWrapper} key={type}>
 							<ConnectedDrumControlPanel 
 								type={type}
 								label={label}

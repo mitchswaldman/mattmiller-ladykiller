@@ -8,6 +8,7 @@
     "jquery-knob": "^1.2.11",
     "prop-types": "^15.6.0",
     "radium": "^0.19.6",
+    "raven-js": "^3.21.0",
     "re-reselect": "^1.0.1",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",

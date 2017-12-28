@@ -2,11 +2,6 @@ import React from 'react'
 import Radium from 'radium'
 import PropTypes from 'prop-types'
 import {
-	onModeClick, 
-	onPlayClick,
-	onTempoChange
-} from '../../actionCreators'
-import {
 	ConnectedSwitchModeButton,
 	ConnectedPlayButton,
 	ConnectedTempoControl,
@@ -42,7 +37,7 @@ class ControlSection extends React.Component {
 	}
 }
 
-ControlSection.PropTypes = {
+ControlSection.propTypes = {
 	showControlPanel: PropTypes.bool.isRequired
 }
 

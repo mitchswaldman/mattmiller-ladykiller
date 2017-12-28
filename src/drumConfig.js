@@ -52,6 +52,13 @@ const drumConfig = [
 		color: '#5C6D70',
 		[MATT_MODE]: 'wav/GRANDMA.wav',
 		[TIANA_MODE]: 'wav/GRANDMA_T.wav'
+	},
+	{
+		type: 'ROCKING',
+		label: 'Rockin out',
+		color: '#A37774',
+		[MATT_MODE]: 'wav/ROCKIN.wav',
+		[TIANA_MODE]: 'wav/ROCKIN_T.wav'
 	}
 ]
 
