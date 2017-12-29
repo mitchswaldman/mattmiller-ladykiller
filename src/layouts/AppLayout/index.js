@@ -46,7 +46,7 @@ class AppLayout extends React.Component {
 			},
 			bottomSectionWrapper: {
 				width: '100%', 
-				flex: showControlPanel ? '1 1 100px' : '0 1 50px'
+				flex: showControlPanel ? '0 1 100px' : '0 1 50px'
 			},
 			topSection: {
 				width: '100%', height: '100%',
@@ -69,15 +69,11 @@ class AppLayout extends React.Component {
 			<div id='page-wrapper' style={styles.pageWrapper}>
 				<div id='wrapper' style={styles.wrapper}>
 					{!samplesLoaded && 
-						<div>
 							<div className='loader'>
 							</div>
-							<div>
-							</div>
-						</div>
 					}
 					{samplesLoaded && 
-					<div>
+					<div style={styles.wrapper}>
 						<div id='top-section-wrapper' style={styles.topSectionWrapper}>
 							<div id='top-section' style={styles.topSection}>
 								<div style={styles.drumSection}>

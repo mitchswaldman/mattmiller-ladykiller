@@ -7,24 +7,53 @@ import {
 import Knob from '../../components/Knob'
 
 const DrumControl = ({control, params, handleChange}) => {
-	const onChange = (value) => {
-		handleChange(control, value)
+	const onChange = (e) => {
+		const {target} = e 
+		handleChange(control, target.value)
 	}
+
+	const MARGIN_SIDE = '5px'
 	const style = {
-		flex: 1
+		flex: 1,
+		marginLeft: MARGIN_SIDE,
+		marginRight: MARGIN_SIDE
+	}
+	const labelStyle = {
+		margin: 'auto',
+		textAlign: 'center'
+	}
+
+	const inputStyle = {
+		maxWidth: '60px'
+	}
+	const controlToIcon = (control) => {
+		switch(control) {
+			case 'level':
+				return <i className="fas fa-volume-up"></i>
+			case 'pan':
+				return <i className="fas fa-arrows-alt-h"></i>
+			case 'speed':
+				return <i className="far fa-clock"></i>
+			default:
+				return <i className="fas fa-align-justify"></i>
+		}
 	}
 	return (
 		<div style={style}>
-			<label>{control}</label>
-			<div>
-				<Knob type='range'
+			<div style={labelStyle}>
+				{controlToIcon(control)}
+			</div>
+			<div className='range-slider'>
+				<input 
+					className='slider'
+					type='range'
 					name={control}
 					onChange={onChange}
 					max={params.max}
 					min={params.min}
 					step={params.step}
 					value={params.value}
-					width='50%'/>
+					/>
 			</div>
 		</div>
 	)
@@ -34,24 +63,22 @@ const DrumControlPanel = ({label, drumControls, handleChange}) => {
 		handleChange(control, value)
 	}
 	const style = {
-		display: 'flex'
+		display: 'flex',
+	}
+	const absoluteStyle = {
+		transform: 'translateY(50%)'
 	}
 	return (
-		<div >
-			<div>
-				{label}
-			</div>
-			<div style={style}>
-				{Object.keys(drumControls).map((control, idx) => {
-					return (
-						<DrumControl key={idx}
-						control={control} 
-						params={drumControls[control]}
-						handleChange={onChange}/>
-					)
-				})}
-			</div>
-		</div>
+				<div style={style}>
+					{Object.keys(drumControls).map((control, idx) => {
+						return (
+							<DrumControl key={idx}
+							control={control} 
+							params={drumControls[control]}
+							handleChange={onChange}/>
+						)
+					})}
+				</div>
 	)
 }
 

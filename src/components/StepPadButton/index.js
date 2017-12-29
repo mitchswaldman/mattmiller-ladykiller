@@ -22,20 +22,49 @@ class StepPadButton extends React.Component {
 			onClick} = this.props 
 
 
+		const getRadialGradient = (hexString) => {
+			const color = Color(hexString)
+			return `radial-gradient(
+				${Color('white')} 0%,
+				#faffbc 100%
+			)`
+			if(color.dark()) {
+				return `radial-gradient(
+					${Color(color).hsl().saturate(.9).lighten(.8).string()} 0%, 
+					${Color(color).hsl().saturate(.8).string()} 90%)`
+			} else {
+				return `radial-gradient(
+				${Color(color).hsl().mix(Color('white'), 0.3).string()} 0%, 
+				${Color(color).hsl().saturate(.9).string()} 40%, 
+				${Color(color).hsl().saturate(.8).string()} 90%)`
+			}
+		}
 		const baseStyle = {
 			margin: 'auto',
 			flex: 1,
 			height: '100%',
 			padding: '10px',
+			boxShadow: `
+				inset 0px 1px 1px 0px rgba(250, 250, 250, .2), 
+				inset 0px -4px 50px 0px rgba(0, 0, 0, .5)`,
 			borderRadius: BORDER_RADIUS,
-			backgroundColor: Color(color).hsl().opaquer(.3).string(),
+			backgroundColor: Color(color).hsl().desaturate(.2).string(),
 			':hover': {
-				border	: `2px solid ${Color(color).hsl().darken(0.2).string()}`
+				border	: 'none'
+			},
+			':focus': {
+				border: 'none',
+				outline: 'none'
+			},
+			':active': {
+				border: 'none',
+				outline: 'none'
 			}
 		}
 		const onStyle = {
 			...baseStyle,
-			backgroundColor: '#000'
+			
+			backgroundImage: getRadialGradient(color),
 		}
 
 		const activeStyle = {

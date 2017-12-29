@@ -69,6 +69,6 @@ export default Immutable({
 	totalSamplesLoaded: 0,
 
 	// UI panel controls
-	showDrumPanel: false,
-	showControlsPanel: false
+	showDrumPanel: true,
+	showControlsPanel: true
 })

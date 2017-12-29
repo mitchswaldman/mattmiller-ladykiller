@@ -10,7 +10,8 @@ class DrumSection extends React.Component {
 				width: '100%',
 				height: '100%',
 				display: 'flex',
-				flexDirection: 'column'
+				flexDirection: 'column',
+				justifyContent: 'center'
 			},
 			drumControlWrapper: {
 				flex: 1
