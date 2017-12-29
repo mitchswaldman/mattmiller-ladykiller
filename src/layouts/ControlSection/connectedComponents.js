@@ -85,14 +85,15 @@ const PlayPauseButton = ({playing, handleClick}) => {
 			width: '100%',
 			position: 'absolute',
 			top: '50%',
-			transform: 'translateY(-50%)'
+			transform: 'translateY(-50%)',
 		},
 		button: {
 			width: '100%',
 			height: '100%',
 			margin: '10px',
 			border: 'none',
-			outline: 'none'
+			outline: 'none',
+			color: '#5C6D70'
 		}
 	}
 	

@@ -28,7 +28,7 @@ const previousTriggers = (() => {
 	return triggers
 })()
 
-const playDrumSound = (buffer, controls, deadline, audioCtx) => {
+export const playDrumSound = (buffer, controls, deadline, audioCtx) => {
 	const source = audioCtx.createBufferSource()
 	previousTriggers
 	source.buffer = buffer
