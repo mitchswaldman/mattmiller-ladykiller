@@ -58,13 +58,13 @@ export const playDrumSound = (buffer, controls, deadline, audioCtx) => {
 }
 
 const stepTrigger = (storeState, deadline, audioCtx, clock) => {
-	const {mode, drumBufferState, drumConfig, drumControlState, steps, currentStep} = storeState
+	const {mode, drumBufferState, currentPattern, drumMuteState, drumConfig, drumControlState, steps, currentStep} = storeState
 	//console.log(`Current step: ${currentStep}`)
 	drumConfig.forEach(({type}) => {
-		const stepId = stepKey(type, currentStep)
+		const stepId = stepKey(type, currentStep, currentPattern)
 
 		
-		if (steps[stepId]) {
+		if (steps[stepId] && !drumMuteState[type]) {
 			if (previousTriggers[type] !== null) {
 				previousTriggers[type].stop()
 			}

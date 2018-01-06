@@ -2,14 +2,24 @@ import React from 'react'
 import Radium from 'radium'
 import {connect} from 'react-redux'
 import {
+	onPatternChange,
+	onMuteClick,
 	onModeClick, 
 	onPlayClick,
 	onTempoChange,
 	onControlPanelClick
 } from '../../actionCreators'
 import {
+	getChannelMuted,
+	getCurrentPattern
+} from '../../selectors'
+import {
 	TIANA_MODE,
-	MATT_MODE
+	MATT_MODE,
+	PATTERN_ON_COLOR,
+	PATTERN_ON_SHADOW_COLOR,
+	PATTERN_OFF_COLOR,
+	PATTERN_OFF_SHADOW_COLOR
 } from '../../constants'
 import Color from 'color'
 
@@ -118,6 +128,44 @@ const PlayPauseButton = ({playing, handleClick}) => {
 	)
 }
 
+const PatternButton = ({active, pattern, handleClick}) => {
+	const wrapperStyle = {
+		flex: 1
+	}
+	const baseStyle = {
+		width: '100%',
+		height: '100%',
+		borderRadius: '5px',
+		':focus': {
+			outline: 'none'
+		},
+		':active': {
+			outline: 'none'
+		}
+	}
+	const activeStyle = {
+		...baseStyle,
+		backgroundImage: `radial-gradient(
+			${PATTERN_ON_COLOR} 0%,
+			${PATTERN_ON_SHADOW_COLOR} 100%
+		)`
+	}
+
+	const inactiveStyle = {
+		...baseStyle,
+		backgroundImage: `radial-gradient(
+			${PATTERN_OFF_COLOR} 0%,
+			${PATTERN_OFF_SHADOW_COLOR} 100%
+		)`
+	}
+	const usedStyle = active ? activeStyle : inactiveStyle
+	return (
+		<div style={wrapperStyle}>
+			<button style={usedStyle}
+				onClick={handleClick}>{pattern + 1}</button>
+		</div>
+	)
+}
 const TempoControl = ({tempo, handleChange}) => {
 	const styles = {
 		wrapper: {
@@ -148,6 +196,8 @@ const TempoControl = ({tempo, handleChange}) => {
 		</div>
 	)
 }
+
+
 
 export const ConnectedSwitchModeButton = (() => {
 	const mapStateToProps = (state) => ({
@@ -192,3 +242,14 @@ export const ConnectedShowHideControlPanel = (() => {
 	})
 	return connect(null, mapDispatchToProps)(ShowHideControlPanel)
 })()
+
+export const ConnectedPatternControl = (() => {
+	const mapStateToProps = (state, ownProps) => ({
+		active: getCurrentPattern(state) === ownProps.pattern
+	})
+	const mapDispatchToProps = (dispatch, ownProps) => ({
+		handleClick: () => dispatch(onPatternChange(ownProps.pattern))
+	})
+	return connect(mapStateToProps, mapDispatchToProps)(PatternButton)
+})()
+

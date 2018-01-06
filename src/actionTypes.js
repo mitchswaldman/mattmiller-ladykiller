@@ -11,3 +11,6 @@ export const PLAY_CLICK = 'PLAY_CLICK'
 export const TEMPO_CHANGE = 'TEMPO_CHANGE'
 
 export const DRUM_CONTROL_CHANGE = 'DRUM_CONTROL_CHANGE'
+
+export const MUTE_CLICK = 'MUTE_CLICK'
+export const ON_PATTERN_CHANGE = 'ON_PATTERN_CHANGE'

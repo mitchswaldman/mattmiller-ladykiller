@@ -1,5 +1,5 @@
-export const stepKey = (drumType, step) => {
-	return `${drumType}_${step}`
+export const stepKey = (drumType, step, pattern) => {
+	return `${drumType}_${step}_${pattern}`
 }
 
 export const bufferKey = (drumType, mode) => {

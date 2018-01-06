@@ -10,8 +10,8 @@ export const getCurrentStep = createSelector(
 
 export const getStepButton = createCachedSelector(
 	getSteps,
-	(state, type, step)	=> stepKey(type, step),
-	(steps, stepKey) => {
+	(state, type, step, pattern) => stepKey(type, step, pattern),
+	(steps, stepKey) => {						
 		return steps[stepKey]
 	}
 )(
@@ -21,5 +21,7 @@ export const getStepButton = createCachedSelector(
 export const getDrumControls = (state, type) => state.drumControlState[type]
 export const getDrumPanel = state => state.showDrumPanel
 export const getControlPanel = state => state.showControlsPanel
-
+export const getCurrentPattern = state => state.currentPattern
 export const getLoading = state => state.samplesLoaded
+
+export const getChannelMuted = (state, type) => state.drumMuteState[type]

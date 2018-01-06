@@ -7,6 +7,7 @@ import {
 	ConnectedTempoControl,
 	ConnectedShowHideControlPanel
 } from './connectedComponents'
+import PatternControlSection from './PatternControlSection'
 
 class ControlSection extends React.Component {
 	render() {
@@ -26,6 +27,9 @@ class ControlSection extends React.Component {
 						</div>
 						<div style={{flex: 3}}>
 							<ConnectedTempoControl/>
+						</div>
+						<div style={{flex: 1}}>
+							<PatternControlSection />
 						</div>
 						<div style={{flex: 1}}>
 							<ConnectedPlayButton />

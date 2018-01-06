@@ -6,16 +6,19 @@ import {
 	MATT_MODE,
 	TIANA_MODE,
 	MODES,
-	TOTAL_STEPS
+	TOTAL_STEPS,
+	TOTAL_PATTERNS
 } from './constants'
 
 const initialStepState = (() => {
 	const steps = {}
 	for(let step = 0; step < TOTAL_STEPS; step++) {
-		drumConfig.forEach(({type}) => {
-			const key = stepKey(type, step)
-			steps[key] = false
-		})
+		for (let pattern = 0; pattern < TOTAL_PATTERNS; pattern++){
+			drumConfig.forEach(({type}) => {
+					const key = stepKey(type, step, pattern)
+					steps[key] = false
+				})
+		}
 	}
 	return steps
 })()
@@ -52,15 +55,25 @@ const drumLoadingState = (() => {
 	})
 })()
 
+const drumMuteState = (() => {
+	const muteState = {}
+	drumConfig.forEach(({type}) => {
+		muteState[type] = false
+	})
+	return muteState
+})()
+
 export default Immutable({
 	steps: initialStepState,
 	drumControlState: initialDrumState,
 	drumBufferState: drumBufferState,
 	drumLoadingState: drumLoadingState,
+	drumMuteState: drumMuteState,
 	drumConfig: drumConfig,
 
 	playing: true,
 	currentStep: 0,
+	currentPattern: 0,
 	tempo: 120,
 	stepDivision: 0.25,
 	mode: MATT_MODE,

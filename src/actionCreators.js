@@ -1,4 +1,6 @@
 import {
+	ON_PATTERN_CHANGE,
+	MUTE_CLICK,
 	DRUM_CONTROL_CHANGE,
 	CONTROL_PANEL_CLICK,
 	TEMPO_CHANGE,
@@ -55,5 +57,19 @@ export const onDrumControlChange = (type, control, value) => ({
 		type, 
 		control, 
 		value
+	}
+})
+
+export const onMuteClick = (type) => ({
+	type: MUTE_CLICK,
+	payload: {
+		type
+	}
+})
+
+export const onPatternChange = (pattern) => ({
+	type: ON_PATTERN_CHANGE,
+	payload: {
+		pattern
 	}
 })

@@ -2,13 +2,17 @@ import React from 'react'
 import Radium from 'radium'
 import PropTypes from 'prop-types'
 import Color from 'color'
+import {
+	MUTE_COLOR,
+	MUTE_SHADOW_COLOR
+} from '../../constants'
 
 const BORDER_RADIUS = '4px'
 
 class StepPadButton extends React.Component {
-	shouldComponentUpdate({on: nextOn, active: nextActive}) {
-		const {on, active} = this.props 
-		if((nextOn !== on) || (nextActive !== active)) {
+	shouldComponentUpdate({on: nextOn, active: nextActive, muted: nextMuted}) {
+		const {on, active, muted} = this.props 
+		if((nextOn !== on) || (nextActive !== active) || (muted !== nextMuted)) {
 			return true
 		}
 		return false
@@ -18,6 +22,7 @@ class StepPadButton extends React.Component {
 		const {
 			active,
 			on,
+			muted,
 			color,
 			onClick} = this.props 
 
@@ -71,7 +76,16 @@ class StepPadButton extends React.Component {
 			...baseStyle,
 			backgroundColor: '#888'
 		}
-		const usedStyle = on ? onStyle : (active ? activeStyle : baseStyle)
+
+		const mutedStyle = {
+			...baseStyle,
+			backgroundImage: `radial-gradient(
+					${MUTE_COLOR} 0%,
+					${MUTE_SHADOW_COLOR} 100%
+				)`
+		}
+
+		const usedStyle = muted ? mutedStyle : (on ? onStyle : (active ? activeStyle : baseStyle))
 		return <button style={usedStyle}
 					onClick={onClick}/>
 	}

@@ -1,10 +1,46 @@
 import React from 'react'
+import Radium from 'radium'
 import {getDrumControls} from '../../selectors'
 import {connect} from 'react-redux'
 import {
-	onDrumControlChange
+	onDrumControlChange,
+	onMuteClick
 } from '../../actionCreators'
+import {
+	getChannelMuted
+} from '../../selectors'
 import Knob from '../../components/Knob'
+import Color from 'color'
+import {
+	MUTE_COLOR,
+	MUTE_SHADOW_COLOR
+} from '../../constants'
+
+const MuteButton = ({muted, handleClick}) => {
+	const styles = {
+		muted: {
+			backgroundImage: `radial-gradient(
+				${MUTE_COLOR} 0%,
+				${MUTE_SHADOW_COLOR} 100%
+			)`
+		},
+		unmuted: {
+			boxShadow: `
+				inset 0px 1px 1px 0px rgba(250, 250, 250, .2), 
+				inset 0px -4px 10px 0px rgba(0, 0, 0, .5)`,
+			backgroundImage: `radial-gradient(
+				${Color('white')} 0%,
+				#faffbc 100%
+			)`
+		}
+	}
+	const usedStyle = muted ? styles.muted : styles.unmuted
+	return (
+		<div>
+			<button onClick={handleClick} style={usedStyle}> M </button>
+		</div>
+	)
+}
 
 const DrumControl = ({control, params, handleChange}) => {
 	const onChange = (e) => {
@@ -58,7 +94,8 @@ const DrumControl = ({control, params, handleChange}) => {
 		</div>
 	)
 }
-const DrumControlPanel = ({label, drumControls, handleChange}) => {
+
+const DrumControlPanel = ({label, type, drumControls, handleChange}) => {
 	const onChange = (control, value) => {
 		handleChange(control, value)
 	}
@@ -78,6 +115,7 @@ const DrumControlPanel = ({label, drumControls, handleChange}) => {
 							handleChange={onChange}/>
 						)
 					})}
+					<ConnectedMuteButton type={type}/>
 				</div>
 	)
 }
@@ -92,4 +130,15 @@ export const ConnectedDrumControlPanel = (() => {
 	})
 
 	return connect(mapStateToProps, mapDispatchToProps)(DrumControlPanel)
+})()
+
+export const ConnectedMuteButton = (() => {
+	const mapStateToProps = (state, ownProps) => ({
+		muted: getChannelMuted(state, ownProps.type)
+	})
+
+	const mapDispatchToProps = (dispatch, ownProps) => ({
+		handleClick: () => dispatch(onMuteClick(ownProps.type))
+	})
+	return connect(mapStateToProps, mapDispatchToProps)(Radium(MuteButton))
 })()

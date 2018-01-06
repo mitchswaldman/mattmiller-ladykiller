@@ -4,6 +4,7 @@ import {
 	TIANA_MODE
 } from '../constants'
 import {
+	ON_PATTERN_CHANGE,
 	DRUM_CONTROL_CHANGE,
 	TEMPO_CHANGE,
 	PLAY_CLICK,
@@ -12,7 +13,8 @@ import {
 	ON_TICK,
 	ON_LOAD,
 	DRUM_PANEL_CLICK,
-	CONTROL_PANEL_CLICK
+	CONTROL_PANEL_CLICK,
+	MUTE_CLICK
 } from '../actionTypes'
 import drumConfig from '../drumConfig'
 import {stepKey, bufferKey} from '../helpers'
@@ -27,7 +29,7 @@ export default (state, {type, payload}) => {
 			return state.set('showControlPanel', !state.getIn(['showControlPanel']))
 		case STEP_CLICK: {
 			const {type: drumType, step} = payload;
-			let selector = ['steps', stepKey(drumType, step)];
+			let selector = ['steps', stepKey(drumType, step, state.getIn(['currentPattern']))];
 			return state.setIn(selector, !state.getIn(selector));
 		}
 		case DRUM_CONTROL_CHANGE: {
@@ -49,7 +51,7 @@ export default (state, {type, payload}) => {
 			const playing = state.getIn(['playing'])
 			if (!playing) {
 				return state.merge({
-					playing: !playing	,
+					playing: !playing,
 					currentStep: -1
 				})
 			}
@@ -71,6 +73,14 @@ export default (state, {type, payload}) => {
 				return newState.set('samplesLoaded', true);
 			}
 			return newState;
+		}
+		case MUTE_CLICK: {
+			const {type: drumType} = payload
+			return state.setIn(['drumMuteState', drumType], !state.getIn(['drumMuteState', drumType]))
+		}
+		case ON_PATTERN_CHANGE: {
+			const {pattern} = payload
+			return state.set('currentPattern', pattern)
 		}
 		default:
 			return state ;

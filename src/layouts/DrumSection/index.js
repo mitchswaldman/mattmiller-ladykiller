@@ -1,7 +1,9 @@
 import React from 'react'
 import Radium from 'radium'
 import drumConfig from '../../drumConfig'
-import {ConnectedDrumControlPanel} from './connectedComponents'
+import {
+	ConnectedDrumControlPanel
+} from './connectedComponents'
 
 class DrumSection extends React.Component {
 	render() {
