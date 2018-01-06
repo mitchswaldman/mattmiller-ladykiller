@@ -23,6 +23,7 @@ The files for configuring and loading the samples, and making the drum machine w
 *drumConfig.js* exports an array of objects that configure each drum. These objects have five keys:
 * label - Currently not used, but this field was orignally intended to display the sample name within the drum section.
 * type - This identifies the particular drum type. This field needs to be unique amongst all the drum configs as it is used heavily throughout the application as an identifier.
+* color - This decides what color the drum pad row will be for this drum. 
 * MATT_MODE - This is a pointer to the locatino of the drum sample to play when the drum machine is in MATT_MODE
 * TIANA_MODE - Same as above except for TIANA_MODE
 
